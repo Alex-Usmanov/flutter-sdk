@@ -160,7 +160,12 @@ class CarrotquestSdkPlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
         val con = context
         if (con != null) {
             try {
+                val observable = Carrot.getInitObservable();
                 Carrot.setup(con, apiKey!!, appId!!)
+
+                observable.doOnEach {
+                    Log.w("FFFFF", "Gotten a message $it");
+                }
 
                 try {
                     val iconId = con.resources.getIdentifier("ic_cqsdk_notification", "drawable", con.packageName);
@@ -183,8 +188,9 @@ class CarrotquestSdkPlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
                      println("$e")
                 }
 
-                val observable = Carrot.getInitObservable();
                 Log.w("FFFFF", "TESTS");
+
+
 
                 observable.filter { it }.take(1).doOnEach{
                     Log.w("FFFFF", "Gotten a message");
