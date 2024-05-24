@@ -15,6 +15,7 @@ import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
+
 import org.json.JSONObject
 import java.lang.Exception
 
@@ -160,7 +161,7 @@ class CarrotquestSdkPlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
         if (con != null) {
             try {
                 Carrot.setup(con, apiKey!!, appId!!)
-                
+
                 try {
                     val iconId = con.resources.getIdentifier("ic_cqsdk_notification", "drawable", con.packageName);
                     if (iconId == 0) {
@@ -182,7 +183,13 @@ class CarrotquestSdkPlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
                      println("$e")
                 }
 
-                result.success("true")
+                val observable = Carrot.getInitObservable();
+                Log.w("FFFFF", "TESTS");
+
+                observable.filter { it }.take(1).doOnEach{
+                    Log.w("FFFFF", "Gotten a message");
+                    result.success("true");
+                }
             } catch(e: java.lang.Exception) {
                 result.success("false")
             }
